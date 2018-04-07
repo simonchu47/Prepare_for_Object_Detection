@@ -13,5 +13,5 @@ dependencies:
     - ffmpeg
     - imageio==2.1.2
     - pip:
-        - tensorflow==1.3.0
+        - tensorflow-gpu==1.5.0
         - tensorflow-tensorboard==0.1.8

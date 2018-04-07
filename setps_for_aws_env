@@ -1,0 +1,22 @@
+Deep Learning Base AMI (Ubuntu) Version 4.0 - ami-289aca4e
+
+sudo apt-get install protobuf-compiler python-pil python-lxml python-tk
+
+git clone https://github.com/simonchu47/Prepare_for_Object_Detection
+conda env create -f environment.yml
+
+
+
+
+sudo pip install Cython
+sudo pip install jupyter
+sudo pip install matplotlib
+pip install tensorflow-gpu=1.5
+
+git clone https://github.com/tensorflow/models
+
+# From tensorflow/models/research/
+protoc object_detection/protos/*.proto --python_out=.
+
+# From tensorflow/models/research/
+export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
