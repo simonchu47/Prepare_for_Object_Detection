@@ -1,0 +1,92 @@
+Deep Learning Base AMI (Ubuntu) Version 4.0 - ami-289aca4e
+
+curl -O https://repo.continuum.io/archive/Anaconda3-5.0.1-Linux-x86_64.sh
+
+bash Anaconda3-5.0.1-Linux-x86_64.sh
+
+source ~/.bashrc
+
+sudo apt-get install protobuf-compiler python-pil python-lxml python-tk
+
+git clone https://github.com/simonchu47/Prepare_for_Object_Detection
+conda env create -f environment.yml
+
+
+
+
+sudo pip install Cython
+sudo pip install jupyter
+sudo pip install matplotlib
+pip install tensorflow-gpu=1.5
+
+git clone https://github.com/tensorflow/models
+
+# From tensorflow/models/research/
+protoc object_detection/protos/*.proto --python_out=.
+
+# From tensorflow/models/research/
+export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+
+
+http://download.tensorflow.org/models/object_detection/ssd_mobilenet_v1_coco_2017_11_17.tar.gz
+http://download.tensorflow.org/models/object_detection/faster_rcnn_resnet101_coco_2018_01_28.tar.gz
+
+python models/research/object_detection/train.py --logtostderr --pipeline_config_path=task/models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco.config --train_dir=task/models/ssd_mobilenet_v1_coco_2017_11_17/train
+
+python models/research/object_detection/eval.py --logtostderr --pipeline_config_path=task/models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco.config --checkpoint_dir=task/models/ssd_mobilenet_v1_coco_2017_11_17/train --eval_dir=task/models/ssd_mobilenet_v1_coco_2017_11_17/eval
+
+tensorboard --logdir=task/models/ssd_mobilenet_v1_coco_2017_11_17
+
+python object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path task/models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco.config --trained_checkpoint_prefix task/models/ssd_mobilenet_v1_coco_2017_11_17/train/model.ckpt-5492 --output_directory output_inference_graph_5492.pb
+
+
+
+
+
+python models/research/object_detection/train.py --logtostderr --pipeline_config_path=task/models/faster_rcnn_resnet101_coco_2018_01_28/faster_rcnn_resnet101_coco.config --train_dir=task/models/faster_rcnn_resnet101_coco_2018_01_28/train
+
+/home/ubuntu/task/data/train/
+/home/ubuntu/task/models/faster_rcnn_resnet101_coco_2018_01_28/
+/home/ubuntu/task/models/ssd_mobilenet_v1_coco_2017_11_17
+
+ssh -i "tokyo_sementic.pem" ubuntu@ec2-13-231-207-10.ap-northeast-1.compute.amazonaws.com
+sftp -i "tokyo_sementic.pem" ubuntu@ec2-13-231-207-10.ap-northeast-1.compute.amazonaws.com
+
+# From the tensorflow/models/research/ directory
+python object_detection/eval.py \
+    --logtostderr \
+    --pipeline_config_path=${PATH_TO_YOUR_PIPELINE_CONFIG} \
+    --checkpoint_dir=${PATH_TO_TRAIN_DIR} \
+    --eval_dir=${PATH_TO_EVAL_DIR}
+
+tensorboard --logdir=${PATH_TO_MODEL_DIRECTORY}
+
+# From tensorflow/models/research/
+python object_detection/export_inference_graph.py \
+    --input_type image_tensor \
+    --pipeline_config_path ${PIPELINE_CONFIG_PATH} \
+    --trained_checkpoint_prefix ${TRAIN_PATH} \
+    --output_directory output_inference_graph.pb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/media/diskC/Self_Driving_Car/Term3/Training/models/research/
