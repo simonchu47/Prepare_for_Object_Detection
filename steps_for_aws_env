@@ -37,7 +37,7 @@ python models/research/object_detection/eval.py --logtostderr --pipeline_config_
 
 tensorboard --logdir=task/models/ssd_mobilenet_v1_coco_2017_11_17
 
-python object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path task/models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco.config --trained_checkpoint_prefix task/models/ssd_mobilenet_v1_coco_2017_11_17/train/model.ckpt-5492 --output_directory output_inference_graph_5492.pb
+python model/research/object_detection/export_inference_graph.py --input_type image_tensor --pipeline_config_path task/models/ssd_mobilenet_v1_coco_2017_11_17/ssd_mobilenet_v1_coco.config --trained_checkpoint_prefix task/models/ssd_mobilenet_v1_coco_2017_11_17/train/model.ckpt-5492 --output_directory output_inference_graph_5492.pb
 
 
 
@@ -70,6 +70,11 @@ python object_detection/export_inference_graph.py \
 
 
 
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/cuda/lib64/
+
+
+python object_detection/builders/model_builder_test.py
 
 
 
